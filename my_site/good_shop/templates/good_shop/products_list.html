@@ -1,0 +1,21 @@
+{% extends 'good_shop/basic.html' %}
+{% block title %}
+    Список продуктов
+{% endblock %}
+
+{% block body %}
+    <h1> Продукты: </h1>
+    {% if product %}
+        <div>
+            {% for product in product %}
+                <div>
+                    <p> Название: {{ product.name }} </p>
+                    <p> Цена: {{ product.price }} руб. </p>
+                    <p> Скидка: {% firstof product.discount 'нет скидки' %} </p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h3> Нет продуктов </h3>
+    {% endif %}
+{% endblock %}

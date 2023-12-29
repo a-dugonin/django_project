@@ -1,0 +1,30 @@
+{% extends 'good_shop/basic.html' %}
+{% block title %}
+    Group List
+{% endblock %}
+
+{% block body %}
+    <h1> Groups:
+        <div>
+            {% if not groups %}
+                <h3> Нет активных групп </h3>
+            {% else %}
+                <ul>
+                    {% for group in groups %}
+                        <li>
+                            <div> Группа: {{ group.name }} </div>
+                            <ul>
+                                {% for permission in group.permissions.all %}
+                                    <li>
+                                        {{ permission.name }}
+                                        (<code>{{ permission.codename }}</code>)
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </h1>
+{% endblock %}

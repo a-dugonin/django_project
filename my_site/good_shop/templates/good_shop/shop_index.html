@@ -1,0 +1,34 @@
+{% extends 'good_shop/basic.html' %}
+
+{% block title %}
+    Shop Index
+{% endblock %}
+
+{% block body %}
+    <h1>Привет! </h1>
+    <h3> Список продуктов для заказа: </h3>
+    <div>
+        <ul>
+            {% for name, price in products %}
+                <li>
+                    {{ name }} ({{ name|length }}) for {{ price }} руб.
+                </li>
+                {% if name|length_is:'4' %}
+                    <span></span>
+                {% endif %}
+
+            {% empty %}
+                No products
+            {% endfor %}
+
+        </ul>
+    </div>
+
+    <div>
+        Time run: {{ time_run }}
+    </div>
+
+    <div>
+        {% lorem %}
+    </div>
+{% endblock %}
