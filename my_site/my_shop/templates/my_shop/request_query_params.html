@@ -1,0 +1,16 @@
+{% extends 'my_shop/base.html' %}
+
+{% block title %}
+    Demo
+{% endblock %}
+
+{% block body %}
+    <h1>Добрый день, {% firstof request.GET.name 'пользователь' %}!</h1>
+    <div>
+    <pre>
+        a = '{{ a }}'
+        b = '{{ b }}'
+        result = '{{ result }}'
+    </pre>
+    </div>
+{% endblock %}

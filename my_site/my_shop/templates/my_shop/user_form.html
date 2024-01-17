@@ -1,0 +1,53 @@
+{% extends 'my_shop/base.html' %}
+
+{% block title %}
+    User
+{% endblock %}
+
+{% block body %}
+    <h1>
+        User form
+    </h1>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            <p>
+                <label for="full_name">Введите полное имя</label>
+                <input id="full_name" name="full_name" type="text" maxlength="100">
+            </p>
+
+            <p>
+                <label for id="age">Введите возраст</label>
+                <input id="age" name="age" type="number" min="0" max="100">
+            </p>
+
+            <p>
+                <label for="info">Введите дополнительную информацию</label>
+                <textarea name="info" id="info" cols="42" rows="5"></textarea>
+            </p>
+            <button type="submit">
+                Submit
+            </button>
+        </form>
+    </div>
+
+    {% if request.POST %}
+        <div>
+            <h2>Данные пользователя:</h2>
+            <table>
+                <tr>
+                    <td>Имя:</td>
+                    <td>{{ request.POST.full_name }}</td>
+                </tr>
+                <tr>
+                    <td>Возраст:</td>
+                    <td>{{ request.POST.age }}</td>
+                </tr>
+                <tr>
+                    <td>Информация:</td>
+                    <td>{{ request.POST.info|linebreaks }}</td>
+                </tr>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

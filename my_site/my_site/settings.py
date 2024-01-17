@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'good_shop.apps.GoodShopConfig'
+    'good_shop.apps.GoodShopConfig',
+    'my_shop.apps.MyShopConfig',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'my_shop.middleware.setup_useragent_on_request_middleware',
+    'my_shop.middleware.CountRequestMiddleware',
+    'my_shop.middleware.ThrottlingMiddleware'
 ]
 
 ROOT_URLCONF = 'my_site.urls'
