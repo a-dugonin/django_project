@@ -18,4 +18,9 @@
     {% else %}
         <h3> Нет продуктов </h3>
     {% endif %}
+    <div>
+        <a href="{% url 'good_shop:create_product' %}">
+            Создать новый продукт
+        </a>
+    </div>
 {% endblock %}

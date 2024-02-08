@@ -44,7 +44,7 @@ class ThrottlingMiddleware:
         self.request_user_attempts = {}
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
-        timeout = 1
+        timeout = 0
         if not self.request_user_attempts:
             print('Доступ пользователя разрешен')
         else:

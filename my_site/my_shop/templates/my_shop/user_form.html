@@ -11,20 +11,7 @@
     <div>
         <form method="post">
             {% csrf_token %}
-            <p>
-                <label for="full_name">Введите полное имя</label>
-                <input id="full_name" name="full_name" type="text" maxlength="100">
-            </p>
-
-            <p>
-                <label for id="age">Введите возраст</label>
-                <input id="age" name="age" type="number" min="0" max="100">
-            </p>
-
-            <p>
-                <label for="info">Введите дополнительную информацию</label>
-                <textarea name="info" id="info" cols="42" rows="5"></textarea>
-            </p>
+            {{ form.as_p }}
             <button type="submit">
                 Submit
             </button>
@@ -37,7 +24,7 @@
             <table>
                 <tr>
                     <td>Имя:</td>
-                    <td>{{ request.POST.full_name }}</td>
+                    <td>{{ request.POST.name }}</td>
                 </tr>
                 <tr>
                     <td>Возраст:</td>
