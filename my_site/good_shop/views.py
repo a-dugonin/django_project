@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.models import Group
 from .models import Product, Order
-from .forms import ProductForm
+from .forms import ProductForm, OrderForm
 
 
 # Create your views here.
@@ -34,7 +34,8 @@ def create_product(request: HttpRequest) -> HttpResponse:
         if my_form.is_valid():
             # name = my_form.cleaned_data['name']
             # price = my_form.cleaned_data['price']
-            Product.objects.create(**my_form.cleaned_data)
+            # Product.objects.create(**my_form.cleaned_data)
+            my_form.save()
             url = reverse("good_shop:products")
             return redirect(url)
     else:
@@ -50,3 +51,18 @@ def order_list(request: HttpRequest):
         'order': Order.objects.select_related('user').prefetch_related('products').all(),
     }
     return render(request, template_name='good_shop/order_list.html', context=context)
+
+
+def order_create(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            url = reverse("good_shop:orders")
+            return redirect(url)
+    else:
+        form = OrderForm()
+        context = {
+            "order_form": form
+        }
+        return render(request, template_name='good_shop/create_order.html', context=context)

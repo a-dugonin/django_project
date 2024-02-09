@@ -1,25 +1,25 @@
 {% extends 'good_shop/basic.html' %}
 
 {% block title %}
-    Добавление продукта
+    Создание заказа
 {% endblock %}
 
 {% block body %}
     <h1>
-        Карточка нового продукта
+        Форма для оформления заказа
     </h1>
     <div>
         <form method="post">
             {% csrf_token %}
-            {{ product_form.as_p }}
+            {{ order_form.as_p }}
             <button type="submit">
-                Подтвердить
+                Подтвердить заказ
             </button>
         </form>
     </div>
     <div>
-        <a href="{% url 'good_shop:products' %}">
-            Вернуться к списку продуктов
+        <a href="{% url 'good_shop:orders' %}">
+            Вернуться к списку заказов
         </a>
     </div>
 {% endblock %}

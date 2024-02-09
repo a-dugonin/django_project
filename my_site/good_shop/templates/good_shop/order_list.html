@@ -17,7 +17,7 @@
                         <ul>
                             {% for product in order.products.all %}
                                 <li>
-                                {{ product.name }}, цена - {{ product.price }} руб.
+                                    {{ product.name }}, цена - {{ product.price }} руб.
                                 </li>
                             {% endfor %}
                         </ul>
@@ -28,4 +28,9 @@
     {% else %}
         <h3> Заказов нет </h3>
     {% endif %}
+    <div>
+        <a href="{% url 'good_shop:create_orders' %}">
+            Перейти к созданию заказа
+        </a>
+    </div>
 {% endblock %}
