@@ -1,0 +1,25 @@
+{% extends 'good_shop/basic.html' %}
+
+{% block title %}
+    Обновление карточки продукта
+{% endblock %}
+
+{% block body %}
+    <h1>
+        Карточка продукта
+    </h1>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">
+                Подтвердить
+            </button>
+        </form>
+    </div>
+    <div>
+        <a href="{% url 'good_shop:product_detail' pk=object.pk %}">
+            Вернуться к продукту №{{ object.pk }}
+        </a>
+    </div>
+{% endblock %}

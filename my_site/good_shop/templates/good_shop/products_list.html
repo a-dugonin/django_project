@@ -9,7 +9,7 @@
         <div>
             {% for product in product %}
                 <div>
-                    <p> Название: {{ product.name }} </p>
+                    <p><a href="{% url 'good_shop:product_detail' pk=product.pk %}">Название: {{ product.name }}</a></p>
                     <p> Цена: {{ product.price }} руб. </p>
                     <p> Скидка: {% firstof product.discount 'нет скидки' %} </p>
                 </div>

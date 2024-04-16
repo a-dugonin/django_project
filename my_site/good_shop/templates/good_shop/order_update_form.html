@@ -1,0 +1,25 @@
+{% extends 'good_shop/basic.html' %}
+
+{% block title %}
+    Обновление/изменение данных заказа
+{% endblock %}
+
+{% block body %}
+    <h1>
+        Форма для обновления данных заказа
+    </h1>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">
+                Подтвердить изменение заказа
+            </button>
+        </form>
+    </div>
+    <div>
+        <a href="{% url 'good_shop:orders_detail' pk=object.pk %}">
+            Вернуться к заказу №{{ object.pk }}
+        </a>
+    </div>
+{% endblock %}

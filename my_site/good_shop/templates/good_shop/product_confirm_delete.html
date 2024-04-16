@@ -1,0 +1,23 @@
+{% extends 'good_shop/basic.html' %}
+
+{% block title %}
+    Архивирование карточки товара {{ object.name }}
+{% endblock %}
+
+{% block body %}
+    <h1>
+        Вы точно хотите карточку данного товара {{ object.name }} переместить в архив?
+    </h1>
+    <br>
+    <div>
+        <a href="{% url 'good_shop:product_detail' pk=object.pk %}">Вернуться обратно к карточке товара</a>
+    </div>
+    <br>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Архивировать продукт</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'good_shop/basic.html' %}
+
+{% block title %}
+    Удаление заказа №{{ object.pk }}
+{% endblock %}
+
+{% block body %}
+    <h1>
+        Вы точно хотите удалить заказ #{{ object.pk }} пользователя {{ object.user }}?
+    </h1>
+    <br>
+    <div>
+        <a href="{% url 'good_shop:orders_detail' pk=object.pk %}">Вернуться обратно к заказу</a>
+    </div>
+    <br>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Удалить заказ</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'good_shop/basic.html' %}
+
+{% block title %}
+    Продукт #{{ product.pk }}
+{% endblock %}
+
+{% block body %}
+    <h1>Продукт <strong>{{ product.name }}</strong></h1>
+    <div>
+        <div>
+            Описание: <em>{{ product.description }}</em>
+        </div>
+        <div>
+            Цена: {{ product.price }}
+        </div>
+        <div>
+            Скидка: {{ product.discount }}
+        </div>
+        <div>
+            Статус: {{ product.archived }}
+        </div>
+    </div>
+    <br>
+    <div>
+        <a href="{% url 'good_shop:update_product' pk=product.pk %}">Обновить карточку товара</a>
+    </div>
+    <br>
+    <div>
+        <a href="{% url 'good_shop:delete_product' pk=product.pk %}">Архивировать карточку товара</a>
+    </div>
+    <br>
+    <div>
+        <a href="{% url 'good_shop:products' %}">Вернуться к списку продуктов</a>
+    </div>
+{% endblock %}

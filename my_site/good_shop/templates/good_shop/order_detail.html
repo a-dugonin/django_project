@@ -1,0 +1,36 @@
+{% extends 'good_shop/basic.html' %}
+
+{% block title %}
+    Заказ #{{ object.pk }}
+{% endblock %}
+
+{% block body %}
+    <h1>Заказ №{{ object.pk }}</h1>
+    <div>
+        <p> Заказ пользователя: {% firstof object.user.first_name object.user.username %} </p>
+        <p> Промокод: <code>{{ object.promo }}</code></p>
+        <p> Адрес доставки: {{ object.delivery_address }}</p>
+        <div>
+            Продукты в заказе:
+            <ul>
+                {% for product in object.products.all %}
+                    <li>
+                        {{ product.name }}, цена - {{ product.price }} руб.
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <br>
+    <div>
+        <a href="{% url 'good_shop:update_order' pk=object.pk %}">Обновить/изменить заказ</a>
+    </div>
+    <br>
+    <div>
+        <a href="{% url 'good_shop:delete_order' pk=object.pk %}">Удалить заказ</a>
+    </div>
+    <br>
+    <div>
+        <a href="{% url 'good_shop:orders' %}">Вернуться к списку заказов</a>
+    </div>
+{% endblock %}
