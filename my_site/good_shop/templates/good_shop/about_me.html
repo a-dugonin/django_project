@@ -1,0 +1,19 @@
+{% extends 'good_shop/basic.html' %}
+
+{% block title %}
+    Данные пользователя
+{% endblock %}
+
+{% block body %}
+    <h1>Данные пользователя</h1>
+    {% if user.is_authenticated %}
+    	<h2>Детали:</h2>
+        <p>Логин: {{ user.username }}</p>
+        <p>Имя пользователя: {{ user.first_name }}</p>
+        <p>Фамилия пользователя: {{ user.last_name }}</p>
+        <p>Почтовый ящик: {{ user.email }}</p>
+        <p>Инфо: {{ user.profile.info }}</p>
+    {% else %}
+        <h2>Вход не выполнен</h2>
+    {% endif %} 
+{% endblock %}

@@ -1,12 +1,25 @@
+from django.contrib.auth.views import LoginView
 from django.urls import path
 
 from .views import GoodShopIndexView, GoodShopGroupsView, ProductDetailsView, OrderListView, ProductCreateView, \
     OrderCreateView, ProductsListView, OrderDetailView, ProductUpdateView, ProductDeleteView, OrderUpdateView, \
-    OrderDeleteView
+    OrderDeleteView, get_cookie_view, set_cookie_view, set_session_view, get_session_view, logout_view, AboutMeView, \
+    RegisterView
 
 app_name = 'good_shop'
 urlpatterns = [
     path('', GoodShopIndexView.as_view(), name='index'),
+    path('register/', RegisterView.as_view(), name='register'),
+    # path('login/', login_view, name='login'),
+    path('login/', LoginView.as_view(template_name="good_shop/login.html", redirect_authenticated_user=True),
+         name='login'),
+    path('logout/', logout_view, name='logout'),
+    # path('logout/', MyLogoutView.as_view(), name='logout'),
+    path('about_user/', AboutMeView.as_view(), name='about_user'),
+    path('cookie/get/', get_cookie_view, name='cookie_get'),
+    path('cookie/set/', set_cookie_view, name='cookie_set'),
+    path('session/get/', get_session_view, name='session_get'),
+    path('session/set/', set_session_view, name='session_set'),
     path('groups/', GoodShopGroupsView.as_view(), name='groups'),
     path('products/', ProductsListView.as_view(), name='products'),
     path('products/<int:pk>/', ProductDetailsView.as_view(), name='product_detail'),

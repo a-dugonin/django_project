@@ -13,6 +13,7 @@ class Product(models.Model):
     discount = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     archived = models.BooleanField(default=False)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # @property
     # def description_short(self) -> str:
@@ -33,3 +34,9 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     products = models.ManyToManyField(Product, related_name='order')
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    info = models.TextField(max_length=500, blank=True)
+    agreement_accepted = models.BooleanField(default=False)

@@ -1,0 +1,30 @@
+{% extends 'good_shop/basic.html' %}
+
+{% block title %}
+    Авторизация пользователя
+{% endblock %}
+
+{% block body %}
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+{#        {% if error %}#}
+{#            <p style="color: red">#}
+{#                Ошибка авторизации#}
+{#            </p>#}
+{#        {% endif %}#}
+{##}
+{#        <p>#}
+{#            <label for="username">Логин пользователя:</label>#}
+{#            <input type="text" id="username" name="username" required>#}
+{#        </p>#}
+{#        <p>#}
+{#            <label for="password">Пароль:</label>#}
+{#            <input type="text" id="password" name="password" required>#}
+{#        </p>#}
+
+        <button type="submit">Авторизоваться</button>
+    </form>
+{% endblock %}

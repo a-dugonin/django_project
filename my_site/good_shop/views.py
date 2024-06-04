@@ -1,14 +1,38 @@
 from timeit import default_timer
 
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import LogoutView
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from .forms import GroupForm
-from .models import Product, Order
+from .models import Product, Order, Profile
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+
+
+class RegisterView(CreateView):
+    form_class = UserCreationForm
+    template_name = "good_shop/register.html"
+    success_url = reverse_lazy("good_shop:about_user")
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        Profile.objects.create(user=self.object)
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password1")
+        user = authenticate(self.request, username=username, password=password)
+        login(request=self.request, user=user)
+
+        return response
+
+
+class AboutMeView(TemplateView):
+    template_name = "good_shop/about_me.html"
 
 
 class GoodShopIndexView(View):
@@ -56,11 +80,19 @@ class ProductsListView(ListView):
     #     return context
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = "good_shop.add_product"
+
+    # def test_func(self):
+    #     # return self.request.user.groups.filter(name="secret_group").exists()
+    #     return self.request.user.permission
     model = Product
     fields = "name", "price", "description", "discount"
     # form_class = GroupForm
     success_url = reverse_lazy("good_shop:products")
+
+    def form_valid(self, form):
+        pass
 
 
 # def create_product(request: HttpRequest) -> HttpResponse:
@@ -79,7 +111,6 @@ class ProductCreateView(CreateView):
 #             'product_form': my_form
 #         }
 #         return render(request, template_name='good_shop/product_form.html', context=context)
-
 
 class ProductUpdateView(UpdateView):
     model = Product
@@ -101,7 +132,7 @@ class ProductDeleteView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 
-class OrderListView(ListView):
+class OrderListView(LoginRequiredMixin, ListView):
     queryset = (Order.objects.select_related('user').prefetch_related('products'))
 
 
@@ -112,7 +143,8 @@ class OrderListView(ListView):
 #     return render(request, template_name='good_shop/order_list.html', context=context)
 
 
-class OrderDetailView(DetailView):
+class OrderDetailView(PermissionRequiredMixin, DetailView):
+    permission_required = "good_shop.view_order"
     queryset = (Order.objects.select_related('user').prefetch_related('products'))
 
 
@@ -149,3 +181,48 @@ class OrderUpdateView(UpdateView):
 class OrderDeleteView(DeleteView):
     queryset = (Order.objects.select_related('user').prefetch_related('products'))
     success_url = reverse_lazy("good_shop:orders")
+
+
+def login_view(request: HttpRequest) -> HttpResponse:
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            return redirect("good_shop:index")
+
+        return render(request, 'good_shop/login.html')
+
+    username = request.POST["username"]
+    password = request.POST["password"]
+
+    user = authenticate(request, username=username, password=password)
+    if user:
+        login(request, user)
+        return redirect("good_shop:index")
+
+    return render(request, 'good_shop/login.html', context={'error': "Неверное имя пользователя или пароль"})
+
+@user_passes_test(lambda user:user.is_superuser)
+def set_cookie_view(request: HttpRequest) -> HttpResponse:
+    response = HttpResponse("Cookie set")
+    response.set_cookie("fizz", "buzz", max_age=3600)
+    return response
+
+def get_cookie_view(request: HttpRequest) -> HttpResponse:
+    value = request.COOKIES.get("fizz", "default")
+    return HttpResponse(f"Cookie value {value!r}")
+
+@permission_required("good_shop.view_profile", raise_exception=True)
+def set_session_view(request: HttpRequest) -> HttpResponse:
+    request.session["foo"] = "bar"
+    return HttpResponse("Сессия установлена")
+
+@login_required
+def get_session_view(request: HttpRequest) -> HttpResponse:
+    value = request.session.get("foo", "default")
+    return HttpResponse(f"Session value {value}")
+
+def logout_view(request: HttpRequest) -> HttpResponse:
+    logout(request)
+    return redirect(reverse("good_shop:login"))
+
+# class MyLogoutView(LogoutView):
+#     next_page = reverse_lazy("good_shop:index")
